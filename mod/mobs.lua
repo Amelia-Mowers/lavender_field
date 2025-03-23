@@ -5,12 +5,13 @@ obj_c,
 speed_c,
 move_points_c,
 health_c,
+defense_c,
 attack_c,
 player_c,
 remains_c,
 sight_c,
 block_move_c,
-block_sight_c = batch_comp(13)
+block_sight_c = batch_comp(14)
 
 function new_mob(
   name,
@@ -35,6 +36,7 @@ function new_mob(
     {speed_c, 2},
     {attack_c, 3},
     {health_c, health:new(5)},
+    {defense_c, {}},
     {action_set_c, {
       actions.move,
       actions.melee,

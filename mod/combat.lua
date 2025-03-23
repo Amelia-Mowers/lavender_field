@@ -12,9 +12,16 @@ end
 function health.dead(s) return s.dam>=s.total end
 function health.alive(s) return not s:dead() end
 
-function damage(e,d)
-  health_c[e].dam+=d
-  if d>0 then spawn_damage_number(e,d) end
+dam_type = {
+  phys = "physical",
+}
+
+function damage(e,d,t)
+  local t = t or dam_type.phys
+  local def = defense_c[e][t] or 0
+  local dam = min(d-def,0)
+  health_c[e].dam+=dam
+  spawn_damage_number(e,dam)
 end
 
 function new_health_bar()

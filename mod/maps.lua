@@ -121,6 +121,9 @@ function new_map(
       {cover_tile_c}, 
       {remains_c, st.rubble}, 
       {health_c, health:new(10)}, 
+      {defense_c, {
+        [dam_type.phys] = 4,
+      }},
       {child_c, {insert({
         {pos_c, vec2:new()}, 
         {local_pos_c, vec2:new(0, 0.5)}, 
@@ -138,5 +141,8 @@ function new_map(
       {block_sight_c}, 
       {remains_c, st.rubble}, 
       {health_c, health:new(10)},
+      {defense_c, {
+        [dam_type.phys] = 2,
+      }},
     })
   end
