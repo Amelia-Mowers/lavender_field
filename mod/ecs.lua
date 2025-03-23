@@ -30,3 +30,9 @@ function delete(entity)
     c[entity] = nil
   end
 end
+
+function create_components(...)
+  for name in all({...}) do
+      _ENV[name] = new_comp()
+  end
+end
