@@ -19,7 +19,7 @@ dam_type = {
 function damage(e,d,t)
   local t = t or dam_type.phys
   local def = defense_c[e][t] or 0
-  local dam = min(d-def,0)
+  local dam = max(d-def,0)
   health_c[e].dam+=dam
   spawn_damage_number(e,dam)
 end
