@@ -12,7 +12,6 @@ function render_victory()
     local ty
       = 64
     
-  --  print(text, tx+1, ty+1, 1)
     print(
       text, tx, ty,
       6
