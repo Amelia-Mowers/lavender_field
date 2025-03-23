@@ -2,7 +2,8 @@
 
 attack_anim_c,
 float_c,
-damage_notice_c = batch_comp(3)
+damage_notice_c,
+health_bar_c = batch_comp(4)
 
 health = {}
 health.__index = health
@@ -34,8 +35,6 @@ function damage(e, dam)
     spawn_damage_number(e, dam)
   end
 end
-
-health_bar_c = new_comp()
 
 function new_health_bar()
 	 return {
