@@ -1,5 +1,3 @@
---sprites 
-
 st = {
     point = {
       rot_sprite(1),

@@ -1,5 +1,3 @@
---start menu
-
 start_timer = timer:new(.4)
 start_anim = 1
 start_color = {13,6}

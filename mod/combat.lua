@@ -1,5 +1,3 @@
---combat
-
 health = {}
 health.__index = health
 

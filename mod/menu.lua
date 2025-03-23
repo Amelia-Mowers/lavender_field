@@ -1,4 +1,3 @@
---menu
 menu_cursor = {}
 menu = {}
 

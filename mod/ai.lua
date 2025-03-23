@@ -1,5 +1,3 @@
---ai
-
 last_enemy = nil
 
 function enemy_turn()

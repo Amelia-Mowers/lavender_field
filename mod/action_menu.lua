@@ -1,5 +1,3 @@
---action menu
-
 action_set_c = new_comp()
 actions_c = new_comp()
 

@@ -1,4 +1,3 @@
---timer
 timer = {}
 timer.__index = timer
 

@@ -1,4 +1,3 @@
---render
 sprite_c = new_comp()
 text_c = new_comp()
 rect_c = new_comp()

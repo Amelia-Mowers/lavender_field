@@ -1,4 +1,3 @@
---vec2
 vec2 = {}
 vec2.__index = vec2
 

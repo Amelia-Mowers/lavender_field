@@ -1,5 +1,3 @@
---mobs
-
 spawn_focus_c = new_comp()
 
 function new_mob(

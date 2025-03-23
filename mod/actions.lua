@@ -1,5 +1,3 @@
---actions
-
 actions = {}
 
 actions.move = action:new(

@@ -1,5 +1,3 @@
---status screen
-
 function pad(input, padding)
     while #input < padding do
       input = " " .. input

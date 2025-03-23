@@ -1,5 +1,3 @@
---ecs
-
 entity_counter = 0
 comp_list = {}
 

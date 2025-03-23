@@ -1,4 +1,3 @@
---pathing
 d_field = {}
 d_field.__index = d_field
 

@@ -1,5 +1,3 @@
---maps
-
 function new_map(
     pos,
     size,
