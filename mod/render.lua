@@ -1,12 +1,4 @@
-sprite_c = new_comp()
-text_c = new_comp()
-rect_c = new_comp()
-fill_zone_c = new_comp()
-
-visible_c = new_comp()
-palette_c = new_comp()
-static_c = new_comp()
-offset_c = new_comp()
+sprite_c, text_c, rect_c, fill_zone_c, visible_c, palette_c, static_c, offset_c = batch_comp(8)
 
 function def(input, default)
   if input == nil then
@@ -16,25 +8,9 @@ function def(input, default)
   end
 end
 
-renderable = {}
-renderable.__index = renderable
-
-function renderable:new()
-  local obj = {}
-  setmetatable(obj, self)
-  return obj
-end
-
-function renderable.render(
-  self, e, pos
-)
-  -- base render does nothing, should be overridden
-end
-
 -- sprite implementation
 sprite = {}
 sprite.__index = sprite
-setmetatable(sprite, {__index = renderable})
 
 function sprite:new(
   tiles,
@@ -43,13 +19,14 @@ function sprite:new(
   flip_x,
   flip_y
 )
-  local obj = renderable:new()
-  obj.tiles = tiles
-  obj.a_index = 1
-  obj.order = order or 1
-  obj.size = size or 2
-  obj.flip_x = def(flip_x, false)
-  obj.flip_y = def(flip_y, false)
+  local obj = {
+    tiles = tiles,
+    a_index = 1,
+    order = order or 1,
+    size = size or 2,
+    flip_x = def(flip_x, false),
+    flip_y = def(flip_y, false),
+  }
   setmetatable(obj, sprite)
   return obj
 end
@@ -96,7 +73,6 @@ end
 -- text implementation
 text = {}
 text.__index = text
-setmetatable(text, {__index = renderable})
 
 function text:new(
   txt, 
@@ -104,39 +80,42 @@ function text:new(
   outline, 
   order
 )
-  local obj = renderable:new()
-  obj.text = txt
-  obj.col = col or 6
-  obj.outline = outline
-  obj.order = order or 1
+  local obj = {
+    text = txt,
+    col = col or 6,
+    outline = outline,
+    order = order or 1,
+  }
   setmetatable(obj, text)
   return obj
 end
+
+t_out = {
+  {-1, 0},
+  {1, 0},
+  {0, -1},
+  {0, 1},
+  {-1, -1},
+  {-1, 1},
+  {1, -1},
+  {1, 1},
+}
 
 function text.render(
   self, e, pos
 )
   t = self.text
-  c = self.col
-  o = self.outline
   x = pos.x*16
   y = pos.y*16
-  
-  print(t, x-1, y, o)
-  print(t, x+1, y, o)
-  print(t, x, y-1, o)
-  print(t, x, y+1, o)
-  print(t, x-1, y-1, o)
-  print(t, x-1, y+1, o)
-  print(t, x+1, y-1, o)
-  print(t, x+1, y+1, o)
-  print(t, x, y, c)
+  for d in all(t_out) do
+   print(t, x + d[1], y + d[2], self.outline)
+  end
+  print(t, x, y, self.col)
 end
 
 -- rectangle implementation
 rectangle = {}
 rectangle.__index = rectangle
-setmetatable(rectangle, {__index = renderable})
 
 function rectangle:new(
   size, 
@@ -144,11 +123,12 @@ function rectangle:new(
   border, 
   order
 )
-  local obj = renderable:new()
-  obj.size = size
-  obj.fill = fill or 0
-  obj.border = border or fill or 0
-  obj.order = order or 1
+  local obj = {
+    size = size,
+    fill = fill or 0,
+    border = border or fill or 0,
+    order = order or 1,
+  }
   setmetatable(obj, rectangle)
   return obj
 end
@@ -176,17 +156,17 @@ end
 -- fill zone implementation
 fill_zone = {}
 fill_zone.__index = fill_zone
-setmetatable(fill_zone, {__index = renderable})
 
 function fill_zone:new(
   d_field, 
   border, 
   order
 )
-  local obj = renderable:new()
-  obj.d_field = d_field
-  obj.border = border or 0
-  obj.order = order or 1
+  local obj = {
+    d_field = d_field,
+    border = border or 0,
+    order = order or 1,
+  }
   setmetatable(obj, fill_zone)
   return obj
 end

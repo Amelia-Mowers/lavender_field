@@ -31,8 +31,10 @@ function delete(entity)
   end
 end
 
-function create_components(...)
-  for name in all({...}) do
-      _ENV[name] = new_comp()
+function batch_comp(n)
+  local out = {}
+  for i=1, n do 
+    add(out, new_comp())
   end
+  return unpack(out)
 end
