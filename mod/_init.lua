@@ -8,28 +8,6 @@ function _init()
     state = "start"
     next_state = nil
     
-    name_c = new_comp()
-    mob_c = new_comp()
-    obj_c = new_comp()
-    speed_c = new_comp()
-    move_points_c = new_comp()
-    health_c = new_comp()
-    attack_c = new_comp()
-    player_c = new_comp()
-    
-    sight_c = new_comp()
-    block_move_c = new_comp()
-    block_sight_c = new_comp()
-    removal_timer_c = new_comp()
-    attack_anim_c = new_comp()
-    float_c = new_comp()
-    damage_notice_c = new_comp()
-    cover_tile_c = new_comp()
-    
-    local_pos_c = new_comp()
-    child_c = new_comp()
-    remains_c = new_comp()
-    
     bounds = vec2:new(15, 15)
     
     anim_timer
@@ -47,8 +25,6 @@ function _init()
       = timer:new(0.6)
     e_action_timer.finished 
       = true
-    
-    move_path = {}
     
     pointer = insert({
       {pos_c, vec2:new()},

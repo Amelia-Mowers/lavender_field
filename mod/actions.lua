@@ -1,3 +1,42 @@
+-- 924
+
+function action:new(
+  name, config
+)
+  local obj = {
+    name = name,
+    cost = config.cost,
+    range = config.range,
+    targets = config.targets,
+    range_block_func 
+      = config.range_block_func
+      or no_block,
+    on_select
+      = config.on_select,
+    render_valid_targets
+      = config.render_valid_targets,
+    valid_target 
+      = config.valid_target, 
+    ai_eval = config.ai_eval,
+    ai_target = config.ai_target,
+    execute = config.execute,
+    can_use = config.can_use 
+    or function(actor)
+      a_rem = actions_c[actor]
+      a_use = config.cost()
+      return a_rem - a_use
+      >= 0
+    end
+  }
+  
+	 setmetatable( 
+	   obj, 
+	   action
+  )
+  return obj
+end
+
+
 actions = {}
 
 actions.move = action:new(

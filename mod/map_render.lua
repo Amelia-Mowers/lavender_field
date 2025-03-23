@@ -1,3 +1,7 @@
+cover_tile_c = new_comp()
+local_pos_c = new_comp()
+child_c = new_comp()
+
 covered_tiles = {}
 unfogged_tiles = {}
 visible_tiles = {}

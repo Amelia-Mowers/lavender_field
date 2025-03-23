@@ -1,5 +1,20 @@
 spawn_focus_c = new_comp()
 
+name_c = new_comp()
+mob_c = new_comp()
+obj_c = new_comp()
+speed_c = new_comp()
+move_points_c = new_comp()
+health_c = new_comp()
+attack_c = new_comp()
+player_c = new_comp()
+
+remains_c = new_comp()
+
+sight_c = new_comp()
+block_move_c = new_comp()
+block_sight_c = new_comp()
+
 function new_mob(
   name,
   pos,

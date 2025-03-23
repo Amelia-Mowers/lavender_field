@@ -1,3 +1,9 @@
+-- 906
+
+attack_anim_c = new_comp()
+float_c = new_comp()
+damage_notice_c = new_comp()
+
 health = {}
 health.__index = health
 
@@ -281,3 +287,25 @@ function reset_actions()
 	  next_state = "victory"
 	end
   end
+
+
+
+  function update_attack_animations()
+	for e, anim in pairs(attack_anim_c) do
+	  anim.t:tick()
+	  local fract = anim.t:fract()
+	  local dir = anim.dir
+	  if dir.x != 0 and dir.y != 0 then
+		dir = dir * 0.7071
+	  end
+	  local bounce = 1 - 2 * abs(fract - 0.5)
+	  bounce = bounce * bounce
+	  local max_extent = 0.4
+	  offset_c[e] = dir * bounce * max_extent
+	  if anim.t.finished then
+		attack_anim_c[e] = nil
+		offset_c[e] = vec2:new()
+	  end
+	end
+  end
+  

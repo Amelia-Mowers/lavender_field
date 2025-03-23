@@ -20,11 +20,6 @@ function _update()
     if state == "target" then
       pointer_control_pad()
       target_deselect()
-      if target_selection != nil 
-      and pos_c[pointer] != nil 
-      then
-        move_path = {}
-      end
       set_action_target()
       trigger_action()
     end

@@ -1,3 +1,5 @@
+removal_timer_c = new_comp()
+
 timer = {}
 timer.__index = timer
 
