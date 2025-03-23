@@ -1,4 +1,11 @@
-sprite_c, text_c, rect_c, fill_zone_c, visible_c, palette_c, static_c, offset_c = batch_comp(8)
+sprite_c, 
+text_c, 
+rect_c, 
+fill_zone_c, 
+visible_c, 
+palette_c, 
+static_c, 
+offset_c = batch_comp(8)
 
 function def(input, default)
   if input == nil then

@@ -1,8 +1,8 @@
 -- 906
 
-attack_anim_c = new_comp()
-float_c = new_comp()
-damage_notice_c = new_comp()
+attack_anim_c,
+float_c,
+damage_notice_c = batch_comp(3)
 
 health = {}
 health.__index = health

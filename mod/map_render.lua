@@ -1,6 +1,6 @@
-cover_tile_c = new_comp()
-local_pos_c = new_comp()
-child_c = new_comp()
+cover_tile_c,
+local_pos_c,
+child_c = batch_comp(3)
 
 covered_tiles = {}
 unfogged_tiles = {}

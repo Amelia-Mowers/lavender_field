@@ -1,11 +1,11 @@
 menu_cursor = {}
 menu = {}
 
-menu_cursor_c = new_comp()
-menu_c = new_comp()
-menu_back_c = new_comp()
-menu_select_c = new_comp()
-menu_move_onto_c = new_comp()
+menu_cursor_c,
+menu_c,
+menu_back_c,
+menu_select_c,
+menu_move_onto_c = batch_comp(5)
 
 menu_move_cooldown
   = timer:new(0.3)

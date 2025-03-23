@@ -1,8 +1,6 @@
 -- 689
 
-action_set_c = new_comp()
-actions_c = new_comp()
-possible_tar_c = new_comp()
+action_set_c, actions_c, possible_tar_c = batch_comp(3)
 
 action = {}
 action.__index = action
