@@ -93,12 +93,6 @@ function vec2.key(self)
     .. tostring(self.y)
 end
 
---function vec2.key(self)
---  local x_val = flr(self.x)
---  local y_val = flr(self.y)
---  return (x_val << 8) + y_val
---end
-
 function vec2.neighbors(self)
   return {
     vec2:new(

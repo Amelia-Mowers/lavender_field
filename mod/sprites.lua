@@ -11,6 +11,10 @@ function quad_sprite(input)
   return {input, input, input, input,}
 end
 
+function blank_sprite()
+  return {0, 0, 0, 0}
+end
+
 
 st = {
     point = {

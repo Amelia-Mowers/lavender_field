@@ -1,274 +1,98 @@
-sprite_c, 
-text_c, 
-rect_c, 
-fill_zone_c, 
-visible_c, 
-palette_c, 
-static_c, 
-offset_c = batch_comp(8)
+sprite_c, text_c, rect_c, fill_zone_c, visible_c, palette_c, static_c, offset_c = batch_comp(8)
 
-function def(input, default)
-  if input == nil then
-    return default
-  else
-    return input
-  end
+function def(i, d)
+  return i or d
 end
 
--- sprite implementation
 sprite = {}
 sprite.__index = sprite
 
-function sprite:new(
-  tiles,
-  order,
-  size,
-  flip_x,
-  flip_y
-)
-  local obj = {
-    tiles = tiles,
-    a_index = 1,
-    order = order or 1,
-    size = size or 2,
-    flip_x = def(flip_x, false),
-    flip_y = def(flip_y, false),
-  }
-  setmetatable(obj, sprite)
-  return obj
+function sprite:new(tiles, order, size, flip_x, flip_y)
+  local o = {tiles = tiles, a_index = 1, order = order or 1, size = size or 2, flip_x = def(flip_x, false), flip_y = def(flip_y, false)}
+  setmetatable(o, sprite)
+  return o
 end
 
-q = {
-  {0,0}, 
-  {8,0}, 
-  {0,8}, 
-  {8,8}
-}
+q = {{0, 0}, {8, 0}, {0, 8}, {8, 8}}
 
-function sprite.render(
-  self, e, pos
-)
-  if self.a_index 
-  > #self.tiles then
-    self.a_index = 1
+function sprite.render(s, e, pos)
+  if s.a_index > #s.tiles then
+    s.a_index = 1
   end
-  
-  local tile 
-    = self.tiles[self.a_index]
-  local px, py 
-    = pos.x*16, pos.y*16
-  
-  if type(tile) 
-  == "number" then
-    if tile == 0 then
-      return
+  local t, px, py = s.tiles[s.a_index], pos.x * 16, pos.y * 16
+  if type(t) == "number" then
+    if t ~= 0 then
+      spr(t, px, py, s.size, s.size, s.flip_x, s.flip_y)
     end
-    spr(tile, px, py, self.size, self.size, self.flip_x, self.flip_y)
-  elseif type(tile) == "table" then
-    for i=1, #tile do
-      local t = tile[i]
-      if t != 0 then
-        local t_id = type(t) == "table" and t[1] or t
-        local flip_x = type(t) == "table" and t.flip_x or false
-        local flip_y = type(t) == "table" and t.flip_y or false
-        spr(t_id, px+q[i][1], py+q[i][2], 1, 1, flip_x, flip_y)
+  elseif type(t) == "table" then
+    for i = 1, #t do
+      local ti = t[i]
+      if ti ~= 0 then
+        local tid, fx, fy = type(ti) == "table" and ti[1] or ti, type(ti) == "table" and ti.flip_x or false, type(ti) == "table" and ti.flip_y or false
+        spr(tid, px + q[i][1], py + q[i][2], 1, 1, fx, fy)
       end
     end
   end
 end
 
--- text implementation
 text = {}
 text.__index = text
 
-function text:new(
-  txt, 
-  col,
-  outline, 
-  order
-)
-  local obj = {
-    text = txt,
-    col = col or 6,
-    outline = outline,
-    order = order or 1,
-  }
-  setmetatable(obj, text)
-  return obj
+function text:new(txt, col, outline, order)
+  local o = {text = txt, col = col or 6, outline = outline, order = order or 1}
+  setmetatable(o, text)
+  return o
 end
 
-t_out = {
-  {-1, 0},
-  {1, 0},
-  {0, -1},
-  {0, 1},
-  {-1, -1},
-  {-1, 1},
-  {1, -1},
-  {1, 1},
-}
+t_out = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}, {-1, -1}, {-1, 1}, {1, -1}, {1, 1}}
 
-function text.render(
-  self, e, pos
-)
-  t = self.text
-  x = pos.x*16
-  y = pos.y*16
+function text.render(s, e, pos)
+  local t, x, y = s.text, pos.x * 16, pos.y * 16
   for d in all(t_out) do
-   print(t, x + d[1], y + d[2], self.outline)
+    ?t, x + d[1], y + d[2], s.outline
   end
-  print(t, x, y, self.col)
+  ?t, x, y, s.col
 end
 
--- rectangle implementation
 rectangle = {}
 rectangle.__index = rectangle
 
-function rectangle:new(
-  size, 
-  fill, 
-  border, 
-  order
-)
-  local obj = {
-    size = size,
-    fill = fill or 0,
-    border = border or fill or 0,
-    order = order or 1,
-  }
-  setmetatable(obj, rectangle)
-  return obj
+function rectangle:new(size, fill, border, order)
+  local o = {size = size, fill = fill or 0, border = border or fill or 0, order = order or 1}
+  setmetatable(o, rectangle)
+  return o
 end
 
-function rectangle.render(
-  self, e, pos
-)
-  local corn = pos + self.size
-  rectfill(
-    pos.x*16,
-    pos.y*16,
-    corn.x*16,
-    corn.y*16,
-    self.fill
-  )
-  rect(
-    pos.x*16,
-    pos.y*16,
-    corn.x*16,
-    corn.y*16,
-    self.border
-  )
+function rectangle.render(s, e, pos)
+  local c = pos + s.size
+  rectfill(pos.x * 16, pos.y * 16, c.x * 16, c.y * 16, s.fill)
+  rect(pos.x * 16, pos.y * 16, c.x * 16, c.y * 16, s.border)
 end
 
--- fill zone implementation
 fill_zone = {}
 fill_zone.__index = fill_zone
 
-function fill_zone:new(
-  d_field, 
-  border, 
-  order
-)
-  local obj = {
-    d_field = d_field,
-    border = border or 0,
-    order = order or 1,
-  }
-  setmetatable(obj, fill_zone)
-  return obj
+function fill_zone:new(d_field, border, order)
+  local o = {d_field = d_field, border = border or 0, order = order or 1}
+  setmetatable(o, fill_zone)
+  return o
 end
 
-function fill_zone.render(
-  self, e, pos
-)
+function fill_zone.render(s, e, pos)
   fillp()
-  
-  local field = self.d_field
-
-  local edges = {
-    {
-      dir = "up",
-      dx1=0,
-      dy1=0,
-      dx2=15,
-      dy2=0
-    },
-    {
-      dir = "right",
-      dx1=15,
-      dy1=0,
-      dx2=15,
-      dy2=15
-    },
-    {
-      dir = "down",
-      dx1=0,
-      dy1=15,
-      dx2=15,
-      dy2=15
-    },
-    {
-      dir = "left",
-      dx1=0,
-      dy1=0,
-      dx2=0,
-      dy2=15
-    }
-  }
-
-  local corners = {
-    {
-      dir1 = vec2.up, 
-      dir2 = vec2.left,
-      dx=0,
-      dy=0
-    },
-    {
-      dir1 = vec2.up,
-      dir2 = vec2.right,
-      dx=15,
-      dy=0
-    },
-    {
-      dir1 = vec2.down,
-      dir2 = vec2.left,
-      dx=0,
-      dy=15
-    },
-    {
-      dir1 = vec2.down,
-      dir2 = vec2.right,
-      dx=15,
-      dy=15
-    }
-  }
-
-  for p in all(field.total) do
-    local px = p.x * 16
-    local py = p.y * 16
-
-    for _, edge in pairs(edges) do
-      local neighbor = p[edge.dir](p)
-      if field.field[neighbor:key()] == nil then
-        line(
-          px + edge.dx1,
-          py + edge.dy1,
-          px + edge.dx2,
-          py + edge.dy2,
-          self.border
-        )
+  local f, b, dirs, crns = s.d_field, s.border, {{"up", 0, 0, 15, 0}, {"right", 15, 0, 15, 15}, {"down", 0, 15, 15, 15}, {"left", 0, 0, 0, 15}}, {{vec2.up, vec2.left, 0, 0}, {vec2.up, vec2.right, 15, 0}, {vec2.down, vec2.left, 0, 15}, {vec2.down, vec2.right, 15, 15}}
+  for p in all(f.total) do
+    local px, py = p.x * 16, p.y * 16
+    for i = 1, 4 do
+      local d = dirs[i]
+      if not f.field[p[d[1]](p):key()] then
+        line(px + d[2], py + d[3], px + d[4], py + d[5], b)
       end
     end
-
-    for _, corner in pairs(corners) do
-      local neighbor = corner.dir1(p)
-      local neighbor = corner.dir2(neighbor)
-      if field.field[neighbor:key()] == nil then
-        pset(
-          px + corner.dx,
-          py + corner.dy,
-          self.border
-        )
+    for i = 1, 4 do
+      local c = crns[i]
+      if not f.field[c[2](c[1](p)):key()] then
+        pset(px + c[3], py + c[4], b)
       end
     end
   end
@@ -276,103 +100,42 @@ function fill_zone.render(
 end
 
 function render_objects()
-  local min_x 
-    = flr(camera_pos.x) - 1
-  local min_y 
-    = flr(camera_pos.y) - 1
-  local max_x 
-    = min_x + 9 
-  local max_y 
-    = min_y + 9
-    
+  local min_x, min_y = flr(camera_pos.x) - 1, flr(camera_pos.y) - 1
+  local max_x, max_y = min_x + 9, min_y + 9
   palt(0, false)
   palt(2, true)
-
-  local render_layers = {}
-  
+  local layers = {}
   for i = -10, 10 do
-    render_layers[i] = {}
+    layers[i] = {}
   end
-
-  local render_components = {
-    sprite_c,
-    text_c,
-    rect_c,
-    fill_zone_c,
-  }
-  
-  for _, comp_table 
-  in pairs(render_components) 
-  do
-    for e, comp 
-    in pairs(comp_table) 
-    do
-      local pos = pos_c[e]
-      if static_c[e] != nil
-      or (
-        pos.x >= min_x 
-        and pos.x <= max_x 
-        and pos.y >= min_y 
-        and pos.y <= max_y 
-      ) then
-        if visible_c[e] == nil
-        or visible_c[e] == true
-        then
-          add(
-            render_layers[
-              comp.order
-            ], 
-            {
-              entity=e, 
-              component=comp
-            }
-          )
+  local r_comps = {sprite_c, text_c, rect_c, fill_zone_c}
+  for _, ct in pairs(r_comps) do
+    for e, comp in pairs(ct) do
+      local p = pos_c[e]
+      if static_c[e] or p.x >= min_x and p.x <= max_x and p.y >= min_y and p.y <= max_y then
+        if visible_c[e] == nil or visible_c[e] == true then
+          add(layers[comp.order], {e = e, c = comp})
         end
       end
     end
   end
-
-  for l, list 
-  in pairs(render_layers) do
-    for _, obj 
-    in pairs(list) do
-      local e = obj.entity
-      local comp 
-        = obj.component
-      local pos = nil
-      
-      if offset_c[e] == nil
-      then
-        pos = pos_c[e]
-      else
-        pos
-          = pos_c[e] 
-          + offset_c[e]
-      end
-      
-      if palette_c[e] 
-      != nil then
+  for _, list in pairs(layers) do
+    for _, obj in pairs(list) do
+      local e, comp = obj.e, obj.c
+      local pos = offset_c[e] and pos_c[e] + offset_c[e] or pos_c[e]
+      if palette_c[e] then
         pal(palette_c[e], 0)
       end
-      
-      if static_c[e] 
-      != nil then
+      if static_c[e] then
         camera(0, 0)
       end
-      
       comp:render(e, pos)
-      
-      camera(
-        camera_pos.x*16,
-        camera_pos.y*16
-      )
-      
+      camera(camera_pos.x * 16, camera_pos.y * 16)
       pal()
       palt(0, false)
       palt(2, true)
     end
   end
-  
   palt()
 end
 
@@ -380,11 +143,11 @@ function update_anim()
   anim_timer:tick()
   if anim_timer.just_finished then
     anim_timer:restart()
-    for comp in all{sprite_c, tile_sprite_mapping} do
-      for _, sprite in pairs(comp) do
-        sprite.a_index += 1
-        if sprite.a_index > #sprite.tiles then
-          sprite.a_index = 1
+    for comp in all {sprite_c, tile_sprite_mapping} do
+      for _, spr in pairs(comp) do
+        spr.a_index += 1
+        if spr.a_index > #spr.tiles then
+          spr.a_index = 1
         end
       end
     end
@@ -393,8 +156,8 @@ end
 
 function set_cam()
   local c = pos_c[camera_focus]:copy()
-  c.x = c.x - 3.5
-  c.y = c.y - 3.5
-  camera_pos = camera_pos * 0.8 + c * 0.2
+  c.x -= 3.5
+  c.y -= 3.5
+  camera_pos = camera_pos * .8 + c * .2
   camera(camera_pos.x * 16, camera_pos.y * 16)
 end
