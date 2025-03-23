@@ -1,18 +1,12 @@
--- 1335
-
 sprite_c = new_comp()
 text_c = new_comp()
 rect_c = new_comp()
 fill_zone_c = new_comp()
-multi_sprite_c = new_comp()
 
 visible_c = new_comp()
 palette_c = new_comp()
 static_c = new_comp()
 offset_c = new_comp()
-
-renderable = {}
-renderable.__index = renderable
 
 function def(input, default)
   if input == nil then
@@ -21,6 +15,9 @@ function def(input, default)
     return input
   end
 end
+
+renderable = {}
+renderable.__index = renderable
 
 function renderable:new()
   local obj = {}
@@ -291,51 +288,6 @@ function fill_zone.render(
   fillp()
 end
 
--- multi-sprite implementation
-multi_sprite = {}
-multi_sprite.__index 
-  = multi_sprite
-setmetatable(
-  multi_sprite, 
-  {__index = renderable}
-)
-
-function multi_sprite:new(
-  tiles,
-  order,
-  size,
-  positions
-)
-  local obj = renderable:new()
-  obj.tiles = tiles
-  obj.a_index = 1
-  obj.order = order or 1
-  obj.size = size or 2
-  obj.positions = positions
-  setmetatable(
-    obj, 
-    multi_sprite
-  )
-  return obj
-end
-
-function multi_sprite.render(
-  self, e, pos
-)
-  local s = sprite:new(
-    self.tiles,
-    self.order,
-    self.size
-  )
-  
-  s.a_index = self.a_index
-  
-  for i 
-  in all(self.positions) do
-    sprite.render(s, e, i)
-  end
-end
-
 function render_objects()
   local min_x 
     = flr(camera_pos.x) - 1
@@ -360,7 +312,6 @@ function render_objects()
     text_c,
     rect_c,
     fill_zone_c,
-    multi_sprite_c
   }
   
   for _, comp_table 
@@ -438,27 +389,16 @@ function render_objects()
   palt()
 end
 
-
 function update_anim()
   anim_timer:tick()
   if anim_timer.just_finished then
     anim_timer:restart()
-    for _, sprite in pairs(sprite_c) do
-      sprite.a_index += 1
-      if sprite.a_index > #sprite.tiles then
-        sprite.a_index = 1
-      end
-    end
-    for _, sprite in pairs(tile_sprite_mapping) do
-      sprite.a_index += 1
-      if sprite.a_index > #sprite.tiles then
-        sprite.a_index = 1
-      end
-    end
-    for _, sprite in pairs(multi_sprite_c) do
-      sprite.a_index += 1
-      if sprite.a_index > #sprite.tiles then
-        sprite.a_index = 1
+    for comp in all{sprite_c, tile_sprite_mapping} do
+      for _, sprite in pairs(comp) do
+        sprite.a_index += 1
+        if sprite.a_index > #sprite.tiles then
+          sprite.a_index = 1
+        end
       end
     end
   end

@@ -2,6 +2,7 @@
 
 action_set_c = new_comp()
 actions_c = new_comp()
+possible_tar_c = new_comp()
 
 action = {}
 action.__index = action
@@ -58,16 +59,10 @@ function action.menu_move_onto(
       nil,
       self.range(tar)
     )
-    
-    visible_c[possible_tar]
-      = true
       
-    pos_c[possible_tar] 
-      = pos_c[tar]
-      
-    multi_sprite_c[
-      possible_tar
-    ].positions = {}
+    for e, _ in pairs(possible_tar_c) do 
+      delete(e)
+    end
     
     if self.render_valid_targets
     then
@@ -77,11 +72,12 @@ function action.menu_move_onto(
           tar,
           pos
         ) then
-          add(
-            multi_sprite_c[
-              possible_tar
-            ].positions, 
-          pos)
+          insert({
+            {pos_c, pos:copy()},
+            {possible_tar_c},
+            {sprite_c, sprite:new(st.point,4)},
+            {palette_c, {[7] = 9}}
+          })
         end 
       end
     end
@@ -150,8 +146,9 @@ function action_menu_back()
     = false
   visible_c[action_range_2]
     = false
-  visible_c[possible_tar]
-    = false
+  for e, _ in pairs(possible_tar_c) do 
+    visible_c[e] = false
+  end
   next_state = "pick"
   
   hide_action_menu()
@@ -315,8 +312,9 @@ function trigger_action()
       = false
     visible_c[action_range_2]
       = false
-    visible_c[possible_tar]
-      = false
+    for e, _ in pairs(possible_tar_c) do 
+      visible_c[e] = false
+    end
     next_state = "pick"
     close_status_window()
   end

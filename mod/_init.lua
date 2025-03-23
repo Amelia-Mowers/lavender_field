@@ -57,17 +57,6 @@ function _init()
       {static_c},
     })
     
-    possible_tar = insert({
-      {pos_c, vec2:new()},
-      {
-        multi_sprite_c, 
-        multi_sprite:new(
-          st.point, 4, nil, {}
-        )
-      },
-      {palette_c, {[7] = 9}}
-    })
-    
     target = insert({
       {pos_c, vec2:new()},
       {

@@ -38,7 +38,9 @@ function target_select()
       next_state = "pick"
       visible_c[action_range] = false
       visible_c[action_range_2] = false
-      visible_c[possible_tar] = false
+      for e, _ in pairs(possible_tar_c) do 
+        visible_c[e] = false
+      end
       close_status_window()
     end
   end
