@@ -172,3 +172,112 @@ function spawn_damage_number(
     }
   })
 end
+
+function update_floating_entities()
+	for e, float_data in pairs(float_c) do
+	  pos_c[e] = pos_c[e] + float_data.speed
+	  float_data.speed = float_data.speed + float_data.accel
+	end
+  end
+  
+  function update_damage_notices()
+	for e, _ in pairs(damage_notice_c) do
+	  if removal_timer_c[e] then
+		local life_fraction = 1 - removal_timer_c[e]:fract()
+		if life_fraction < 0.3 then
+		  text_c[e].col = 5
+		elseif life_fraction < 0.6 then
+		  text_c[e].col = 9
+		else
+		  text_c[e].col = 8
+		end
+	  end
+	end
+  end
+
+function move_block(pos, index)
+	if pos:in_bound(bounds) == false then
+	  return true
+	end
+	tile_block = fget(map_get(pos), 0)
+	obj_block = false
+	for e in all(index[pos:key()]) do
+	  if block_move_c[e] != nil then
+		obj_block = true
+		break
+	  end
+	end
+	return tile_block or obj_block
+  end
+  
+  function no_block(pos, index)
+	return false
+  end
+  
+
+
+function reset_actions()
+	for e, _ in pairs(actions_c) do
+	  actions_c[e] = 2
+	  palette_c[e] = nil
+	  move_points_c[e] = 0
+	end
+  end
+
+  function death_check()
+	for e, h in pairs(health_c) do
+	  if h:dead() then
+		remains = st.skull
+		if remains_c[e] != nil then
+		  remains = remains_c[e]
+		end
+		health_c[e] = nil
+		block_move_c[e] = nil
+		block_sight_c[e] = nil
+		cover_tile_c[e] = nil
+		sprite_c[e].tiles = remains
+		sprite_c[e].order = 1
+		if child_c[e] != nil then
+		  for c in all(child_c[e]) do
+			sprite_c[c] = nil
+		  end
+		end
+		update_fog_of_war()
+	  end
+	end
+  end
+
+
+
+  function trigger_end_turn()
+	remaining_units = false
+	for e, _ in pairs(player_c) do
+	  if actions_c[e] > 0 or move_points_c[e] > 0 and health_c[e] != nil then
+		remaining_units = true
+		break
+	  end
+	end
+	remaining_living = false
+	for e, _ in pairs(player_c) do
+	  if health_c[e] != nil then
+		remaining_living = true
+		break
+	  end
+	end
+	if remaining_units == false and remaining_living == true then
+	  next_state = "enemy_turn"
+	end
+  end
+  
+  function victory_check()
+	remaining_enemies = false
+	for e, _ in pairs(mob_c) do
+	  if player_c[e] == nil and health_c[e] != nil then
+		remaining_enemies = true
+		break
+	  end
+	end
+	if remaining_enemies == false then
+	  next_state = "victory"
+	end
+  end

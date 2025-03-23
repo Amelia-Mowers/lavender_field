@@ -12,6 +12,14 @@ offset_c = new_comp()
 renderable = {}
 renderable.__index = renderable
 
+function def(input, default)
+  if input == nil then
+    return default
+  else
+    return input
+  end
+end
+
 function renderable:new()
   local obj = {}
   setmetatable(obj, self)
@@ -426,4 +434,57 @@ function render_objects()
   end
   
   palt()
+end
+
+
+function update_anim()
+  anim_timer:tick()
+  if anim_timer.just_finished then
+    anim_timer:restart()
+    for _, sprite in pairs(sprite_c) do
+      sprite.a_index += 1
+      if sprite.a_index > #sprite.tiles then
+        sprite.a_index = 1
+      end
+    end
+    for _, sprite in pairs(tile_sprite_mapping) do
+      sprite.a_index += 1
+      if sprite.a_index > #sprite.tiles then
+        sprite.a_index = 1
+      end
+    end
+    for _, sprite in pairs(multi_sprite_c) do
+      sprite.a_index += 1
+      if sprite.a_index > #sprite.tiles then
+        sprite.a_index = 1
+      end
+    end
+  end
+end
+
+function update_attack_animations()
+  for e, anim in pairs(attack_anim_c) do
+    anim.t:tick()
+    local fract = anim.t:fract()
+    local dir = anim.dir
+    if dir.x != 0 and dir.y != 0 then
+      dir = dir * 0.7071
+    end
+    local bounce = 1 - 2 * abs(fract - 0.5)
+    bounce = bounce * bounce
+    local max_extent = 0.4
+    offset_c[e] = dir * bounce * max_extent
+    if anim.t.finished then
+      attack_anim_c[e] = nil
+      offset_c[e] = vec2:new()
+    end
+  end
+end
+
+function set_cam()
+  local c = pos_c[camera_focus]:copy()
+  c.x = c.x - 3.5
+  c.y = c.y - 3.5
+  camera_pos = camera_pos * 0.8 + c * 0.2
+  camera(camera_pos.x * 16, camera_pos.y * 16)
 end

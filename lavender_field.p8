@@ -7,7 +7,9 @@ __lua__
 #include mod/_init.lua
 #include mod/_update.lua
 #include mod/_draw.lua
-#include mod/_scratch.lua
+#include mod/map_render.lua
+#include mod/line_of_sight.lua
+#include mod/target_control.lua
 #include mod/ecs.lua
 #include mod/vec2.lua
 #include mod/render.lua

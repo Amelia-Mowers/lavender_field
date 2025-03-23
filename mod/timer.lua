@@ -42,3 +42,12 @@ function timer.fract(self)
     self.elapsed
     / self.limit
 end
+
+function timed_removal()
+  for e, t in pairs(removal_timer_c) do
+    t:tick()
+    if t.finished then
+      delete(e)
+    end
+  end
+end

@@ -1,3 +1,17 @@
+function rot_sprite(input)
+  return {
+    input, 
+    {input, flip_x = true}, 
+    {input, flip_y = true}, 
+    {input, flip_x = true, flip_y = true,},
+  }
+end
+
+function quad_sprite(input)
+  return {input, input, input, input,}
+end
+
+
 st = {
     point = {
       rot_sprite(1),

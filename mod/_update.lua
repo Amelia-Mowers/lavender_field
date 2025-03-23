@@ -48,3 +48,10 @@ function _update()
     update_damage_notices()
     update_attack_animations()
   end
+
+  function update_state()
+    if next_state != nil then
+      state = next_state
+      next_state = nil
+    end
+  end
