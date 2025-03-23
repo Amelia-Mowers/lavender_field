@@ -35,7 +35,7 @@ function new_mob(
     {sight_c, 5},
     {speed_c, 2},
     {attack_c, 3},
-    {health_c, health:new(5)},
+    {health_c, health:new(4)},
     {defense_c, {}},
     {action_set_c, {
       actions.move,
@@ -64,8 +64,11 @@ mob = {
         {player_c},
         {
           health_c, 
-          health:new(11)
+          health:new(6)
         },
+        {defense_c, {
+          [dam_type.phys] = 2,
+        }},
       }
     ))
   end,
