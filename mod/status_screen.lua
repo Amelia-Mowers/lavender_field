@@ -8,25 +8,29 @@ end
 function init_status_window()
   status_window = insert {
     {pos_c, vec2:new(5.25, .5)}, 
-    {visible_c, false}, 
     {rect_c, rectangle:new(vec2:new(2.25, 1.9), 0, 6, 5)}, 
     {menu_c, menu:new({})}, 
     {menu_back_c, action_menu_back}, 
-    {static_c}
+    {static_c},
+    {states_visible_c, {
+      target = true,
+      menu = true,
+    }},
   }
   local tar = target_selection
   base_pos = pos_c[status_window] + vec2:new(.25, .25)
   status = insert {
     {pos_c, base_pos}, 
-    {visible_c, false}, 
     {static_c}, 
-    {text_c, text:new("", 6, nil, 7)}
+    {states_visible_c, {
+      target = true,
+      menu = true,
+    }},
+    {text_c, text:new("", 6, nil, 7)},
   }
 end
 
 function open_status_window()
-  visible_c[status] = true
-  visible_c[status_window] = true
   local tar = target_selection
   local h, a, mp, s = health_c[tar], actions_c[tar], move_points_c[tar], speed_c[tar]
   if state == "target" and selected_action then
@@ -54,9 +58,4 @@ function open_status_window()
   local hs, ms = pad(tostr(ch), 2) .. "/" .. tostr(th), tostr(mp) .. "/" .. tostr(s)
   local status_txt = name_c[tar] .. "\n" .. "hp:" .. hs .. "\n" .. "act:" .. tostr(a) .. "/2 \n" .. "mve:" .. ms .. "\n"
   text_c[status].text = status_txt
-end
-
-function close_status_window()
-  visible_c[status] = false
-  visible_c[status_window] = false
 end

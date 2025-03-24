@@ -1,4 +1,5 @@
-sprite_c, text_c, rect_c, fill_zone_c, visible_c, palette_c, static_c, offset_c = batch_comp(8)
+-- Update the batch_comp line to include states_visible_c
+sprite_c, text_c, rect_c, fill_zone_c, visible_c, palette_c, static_c, offset_c, states_visible_c = batch_comp(9)
 
 function def(i, d)
   return i or d
@@ -119,7 +120,13 @@ function render_objects()
     for e, comp in pairs(ct) do
       local p = pos_c[e]
       if static_c[e] or p.x >= min_x and p.x <= max_x and p.y >= min_y and p.y <= max_y then
-        if visible_c[e] == nil or visible_c[e] == true then
+        -- Check if entity should be visible based on the current state
+        local state_visible = true
+        if states_visible_c[e] then
+          state_visible = states_visible_c[e][state] == true
+        end
+        
+        if (visible_c[e] == nil or visible_c[e] == true) and state_visible then
           add(layers[comp.order], {e = e, c = comp})
         end
       end

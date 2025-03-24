@@ -21,7 +21,7 @@ function action.menu_move_onto(self)
   return function()
     local tar = target_selection
     
-    visible_c[action_range], visible_c[action_range_2] = true, false
+    visible_c[action_range_2] = false
     
     local range = d_field:new(pos_c[tar], self.range_block_func)
     fill_zone_c[action_range].d_field = range
@@ -36,7 +36,11 @@ function action.menu_move_onto(self)
             {pos_c, pos:copy()},
             {possible_tar_c},
             {sprite_c, sprite:new(st.point, 4)},
-            {palette_c, {[7] = 9}}
+            {palette_c, {[7] = 9}},
+            {states_visible_c, {
+              target = true,
+              menu = true,
+            }}
           })
         end
       end
@@ -50,35 +54,57 @@ function init_action_menu()
   action_range = insert({
     {pos_c, vec2:new(4, 4)},
     {fill_zone_c, fill_zone:new(d_field:new(vec2:new(), no_block), 12, 3)},
-    {visible_c, false},
+    {states_visible_c, {
+      target = true,
+      menu = true,
+    }}
   })
   
   action_range_2 = insert({
     {pos_c, vec2:new(4, 4)},
     {fill_zone_c, fill_zone:new(d_field:new(vec2:new(), no_block), 9, 3)},
     {visible_c, false},
+    {states_visible_c, {
+      target = true,
+      menu = true,
+    }}
   })
   
   action_menu = insert({
     {pos_c, vec2:new(.5, .5)},
-    {visible_c, false},
     {rect_c, rectangle:new(vec2:new(2, 2), 0, 6, 5)},
     {menu_c, menu:new({})},
     {menu_back_c, action_menu_back},
     {static_c},
+    {states_visible_c, {menu = true}}
+  })
+    
+  menu_cursor = insert({
+    {pos_c, vec2:new()},
+    {
+      menu_cursor_c, 
+      menu_cursor:new(
+              action_menu,
+              vec2:new(-0.5,0)
+      )
+    },
+    {
+      sprite_c, 
+      sprite:new(
+        st.menu_curs,
+        7,1
+      )
+    },
+    {static_c},
+    {states_visible_c, {
+      menu = true
+    }},
   })
 end
 
 function action_menu_back()
   target_selection = nil
-  visible_c[target], visible_c[pointer] = false, true
-  visible_c[action_range], visible_c[action_range_2] = false, false
-  
-  for e in pairs(possible_tar_c) do visible_c[e] = false end
-  
   next_state = "pick"
-  hide_action_menu()
-  close_status_window()
 end
 
 function open_action_menu()
@@ -107,6 +133,7 @@ function open_action_menu()
       {menu_select_c, a:menu_func()},
       {menu_move_onto_c, a:menu_move_onto()},
       {static_c},
+      {states_visible_c, {menu = true}}
     })
     
     menu.elems[menu_pos:key()] = elem
@@ -116,26 +143,16 @@ function open_action_menu()
   
   rect_c[action_menu].size = menu_size + vec2:new(0.75, 1)
 
-  -- Show menu elements
-  visible_c[action_menu], visible_c[menu_cursor] = true, true
-  for _, e in pairs(menu.elems) do visible_c[e] = true end
+  open_status_window()
   
   local elem = menu.elems[vec2:new():key()]
-  open_status_window()
   menu_move_onto_c[elem]()
+  
+  next_state = "menu"
 end
 
 function exit_action_menu()
-  visible_c[target], visible_c[pointer] = true, true
   next_state = "target"
-  hide_action_menu()
-end
-
-function hide_action_menu()
-  visible_c[action_menu], visible_c[menu_cursor] = false, false
-  
-  local menu = menu_c[action_menu]
-  for _, e in pairs(menu.elems) do visible_c[e] = false end
 end
 
 function do_nothing() end
@@ -166,11 +183,6 @@ function trigger_action()
     
     -- Reset state
     selected_action, action_targets, needed_act_t, target_selection = nil, {}, nil, nil
-    visible_c[target], visible_c[action_range], visible_c[action_range_2] = false, false, false
-    
-    for e in pairs(possible_tar_c) do visible_c[e] = false end
-    
     next_state = "pick"
-    close_status_window()
   end
 end

@@ -19,8 +19,6 @@ function target_select()
       if tar != nil then
         target_selection = tar
         pos_c[target] = tar_pos:copy()
-        visible_c[target] = true
-        visible_c[pointer] = false
         pos_c[action_range] = tar_pos:copy()
         pos_c[action_range_2] = tar_pos:copy()
         next_state = "menu"
@@ -34,14 +32,7 @@ function target_select()
   function target_deselect()
     if btn(🅾️) then
       target_selection = nil
-      visible_c[target] = false
       next_state = "pick"
-      visible_c[action_range] = false
-      visible_c[action_range_2] = false
-      for e, _ in pairs(possible_tar_c) do 
-        visible_c[e] = false
-      end
-      close_status_window()
     end
   end
   

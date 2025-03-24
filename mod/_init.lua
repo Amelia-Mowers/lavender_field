@@ -37,34 +37,17 @@ function _init()
     camera_focus = pointer
     camera_pos = vec2:new()
     
-    menu_cursor = insert({
-            {visible_c, false},
-      {pos_c, vec2:new()},
-      {
-        menu_cursor_c, 
-        menu_cursor:new(
-                action_menu,
-                vec2:new(-0.5,0)
-        )
-      },
-      {
-        sprite_c, 
-        sprite:new(
-          st.menu_curs,
-          7,1
-        )
-      },
-      {static_c},
-    })
-    
     target = insert({
       {pos_c, vec2:new()},
       {
         sprite_c, 
-        sprite:new(st.point,2)
+        sprite:new(st.point,4)
       },
-      {visible_c, false},
-      {palette_c, {[7] = 6}}
+      {palette_c, {[7] = 6}},
+      {states_visible_c, {
+        target = true,
+        menu = true,
+      }}
     })
     target_selection = nil
     
