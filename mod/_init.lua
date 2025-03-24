@@ -77,5 +77,5 @@ function _init()
     init_map()
     
     update_fog_of_war()
-       update_child_pos()
+    update_child_pos()
   end

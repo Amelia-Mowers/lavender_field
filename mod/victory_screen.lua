@@ -16,6 +16,24 @@ function render_victory()
       text, tx, ty,
       6
     )
+
+    text
+      = "press ❎/🅾️ to next level"
+      
+    t_len, _ 
+      = print(text, -10, -10) 
+      
+    tx 
+      = 64 
+      - t_len/2 
+      - 3
+    ty
+      = 74
+    
+    print(
+      text, tx, ty,
+      6
+    )
   end
   
   function victory_control()

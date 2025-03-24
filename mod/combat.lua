@@ -183,6 +183,15 @@ function victory_check()
   next_state="victory"
 end
 
+function loss_check()
+  for e in pairs(mob_c) do
+    if player_c[e] and health_c[e] then
+      return
+    end
+  end
+  next_state="loss"
+end
+
 function update_attack_animations()
   for e,a in pairs(attack_anim_c) do
     a.t:tick()

@@ -35,6 +35,10 @@ function _update()
     if state == "victory" then
       victory_control()
     end
+    if state == "loss" then
+      loss_control()
+    end
+    loss_check()
     death_check()
     update_health_bars()
     update_menu_cursor()

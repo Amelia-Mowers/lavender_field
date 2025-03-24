@@ -54,6 +54,11 @@ function text.render(s, e, pos)
   ?t, x, y, s.col
 end
 
+function text.size(self)
+  local x, y = print(self.text, 0, -10)
+  return vec2:new(x/16,y/16)
+end
+
 rectangle = {}
 rectangle.__index = rectangle
 
@@ -80,19 +85,20 @@ end
 
 function fill_zone.render(s, e, pos)
   fillp()
-  local f, b, dirs, crns = s.d_field, s.border, {{"up", 0, 0, 15, 0}, {"right", 15, 0, 15, 15}, {"down", 0, 15, 15, 15}, {"left", 0, 0, 0, 15}}, {{vec2.up, vec2.left, 0, 0}, {vec2.up, vec2.right, 15, 0}, {vec2.down, vec2.left, 0, 15}, {vec2.down, vec2.right, 15, 15}}
+  local f, b = s.d_field, s.border
+  local dirs = {
+    {"up", 0, 0, 16, 0},
+    {"right", 16, 0, 16, 16},
+    {"down", 0, 16, 16, 16},
+    {"left", 0, 0, 0, 16} 
+  }
+  
   for p in all(f.total) do
     local px, py = p.x * 16, p.y * 16
     for i = 1, 4 do
       local d = dirs[i]
       if not f.field[p[d[1]](p):key()] then
         line(px + d[2], py + d[3], px + d[4], py + d[5], b)
-      end
-    end
-    for i = 1, 4 do
-      local c = crns[i]
-      if not f.field[c[2](c[1](p)):key()] then
-        pset(px + c[3], py + c[4], b)
       end
     end
   end

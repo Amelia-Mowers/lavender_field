@@ -41,8 +41,11 @@ function render_start_menu()
 end
 
 function start_menu_control()
-  if btn(❎) 
-  or btn(🅾️)
+  if (
+    btn(❎) 
+    or btn(🅾️)
+  )
+  and select_cool.finished
   then
     next_state = "pick"
     select_cool:restart()
