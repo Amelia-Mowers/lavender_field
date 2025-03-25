@@ -139,23 +139,66 @@ actions.move = action:new("move", {
   ai_target = function() end,
   
   execute = function(actor)
+    move_interrupt = false
+    
     local move_path = path_to(pos_c[actor], action_targets[1], move_block)
     
-    local dist = #move_path -1
+    if move_path == nil or #move_path == 0 then
+      return
+    end
+    
+    local reversed_path = {}
+    for i = #move_path, 1, -1 do
+      add(reversed_path, move_path[i])
+    end
+    move_path = reversed_path
+    
+    local pos_index = get_pos_index()
+    
     local mp = move_points_c[actor]
     local s = speed_c[actor]
     local a = actions_c[actor]
+    local current_pos = pos_c[actor]
     
-    local mp_use = min(mp, dist)
-    local remaining_steps = dist - mp_use
-    local a_use = ceil(remaining_steps / s)
+    for i = 2, #move_path do
+      if move_interrupt then
+        break
+      end
+      
+      local next_pos = move_path[i]
+      
+      if mp > 0 then
+        mp -= 1
+      else
+        if a > 0 and s > 0 then
+          a -= 1
+          local steps_with_action = s
+          steps_with_action -= 1
+          mp = steps_with_action
+        else
+          break
+        end
+      end
+      
+      current_pos = next_pos
+      pos_c[actor] = next_pos
+      
+      local entities_at_pos = pos_index[next_pos:key()]
+      if entities_at_pos then
+        for _, entity in pairs(entities_at_pos) do
+          if on_move_onto_c[entity] != nil then
+            on_move_onto_c[entity](entity, actor)
+          end
+        end
+      end
+      if move_interrupt then
+        break
+      end
+    end
     
-    local left_over_mp = (a_use * s) - remaining_steps
-
-    move_points_c[actor] = left_over_mp
-    actions_c[actor] = actions_c[actor] - a_use
+    move_points_c[actor] = mp
+    actions_c[actor] = a
     
-    pos_c[actor] = action_targets[1]
     update_fog_of_war(nil, true)
     update_child_pos()
   end,

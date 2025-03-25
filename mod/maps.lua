@@ -76,10 +76,12 @@ function init_map()
     [48] = sprite:new(st.water), 
     [51] = sprite:new(st.dirt), 
     [50] = sprite:new(st.grass),
+    [34] = sprite:new(st.dirt), 
   }
   map_funcs = {
     [51] = spawn_wall, 
     [50] = spawn_tree,
+    [34] = spawn_loot,
   }
   for x = 0, 15 do
     for y = 0, 15 do
@@ -148,4 +150,21 @@ function spawn_tree(pos)
       [dam_type.phys] = 2,
     }},
   })
+end
+
+function spawn_loot(pos)
+  insert({
+    {pos_c, pos}, 
+    {sprite_c, sprite:new(st.loot, 2)}, 
+    {obj_c}, 
+    {block_sight_c}, 
+    {on_move_onto_c, collect_loot}, 
+  })
+end
+
+function collect_loot(triggered, actor)
+  if player_c[actor] != nil then
+    delete(triggered)
+    exp += 100
+  end
 end

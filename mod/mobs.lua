@@ -11,7 +11,8 @@ player_c,
 remains_c,
 sight_c,
 block_move_c,
-block_sight_c = batch_comp(14)
+block_sight_c, 
+on_move_onto_c = batch_comp(15)
 
 function new_mob(
   name,
