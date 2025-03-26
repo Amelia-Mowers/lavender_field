@@ -165,6 +165,8 @@ end
 function collect_loot(triggered, actor)
   if player_c[actor] != nil then
     delete(triggered)
-    exp += 100
+    local e = 100
+    spawn_notice_text(actor,tostring(e),10)
+    exp += e
   end
 end

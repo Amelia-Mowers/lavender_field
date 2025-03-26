@@ -45,7 +45,7 @@ function _update()
   update_menu_cursor()
   update_anim()
   update_floating_entities()
-  update_damage_notices()
+  update_notice_texts()
   update_attack_animations()
 end
 

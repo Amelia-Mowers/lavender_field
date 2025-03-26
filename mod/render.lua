@@ -57,7 +57,7 @@ end
 
 function text.size(self)
   local x, y = print(self.text, 0, -10)
-  return vec2:new(x/16,y/16)
+  return vec2:new(x/16,(y+10)/16)
 end
 
 rectangle = {}

@@ -1,4 +1,4 @@
-attack_anim_c,float_c,damage_notice_c,health_bar_c=batch_comp(4)
+attack_anim_c,float_c,notice_text_c,health_bar_c=batch_comp(4)
 
 health={}
 health.__index=health
@@ -21,7 +21,7 @@ function damage(e,d,t)
   local def = defense_c[e][t] or 0
   local dam = max(d-def,0)
   health_c[e].dam+=dam
-  spawn_damage_number(e,dam)
+  spawn_notice_text(e,tostring(dam),8)
 end
 
 function new_health_bar()
@@ -78,19 +78,21 @@ function update_health_bars()
   end
 end
 
-function spawn_damage_number(e,d)
+function spawn_notice_text(e,txt,color)
   local p=pos_c[e]:copy()
   p.y+=0.1
   p.x+=0.5+rnd(0.05)-0.025
+
+  local t = text:new(txt,color,0,5)
   
   insert({
-    {pos_c,p},
-    {text_c,text:new(tostring(d),8,0,5)},
+    {pos_c,p - (t:size()/2)},
+    {text_c,t},
     {float_c,{
       speed=vec2:new(0,-0.04),
       accel=vec2:new(0,0.001)
     }},
-    {damage_notice_c},
+    {notice_text_c},
     {removal_timer_c,timer:new(1.5)}
   })
 end
@@ -102,12 +104,14 @@ function update_floating_entities()
   end
 end
 
-function update_damage_notices()
-  for e,_ in pairs(damage_notice_c) do
+function update_notice_texts()
+  for e,_ in pairs(notice_text_c) do
     local t=removal_timer_c[e]
     if t then
       local lf=1-t:fract()
-      text_c[e].col=lf<0.3 and 5 or (lf<0.6 and 9 or 8)
+      if lf<0.3 then
+        text_c[e].col=5 
+      end
     end
   end
 end
