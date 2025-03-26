@@ -77,11 +77,13 @@ function init_map()
     [51] = sprite:new(st.dirt), 
     [50] = sprite:new(st.grass),
     [34] = sprite:new(st.dirt), 
+    [35] = sprite:new(st.dirt), 
   }
   map_funcs = {
     [51] = spawn_wall, 
     [50] = spawn_tree,
     [34] = spawn_loot,
+    [35] = spawn_door,
   }
   for x = 0, 15 do
     for y = 0, 15 do
@@ -150,6 +152,27 @@ function spawn_tree(pos)
       [dam_type.phys] = 2,
     }},
   })
+end
+
+function spawn_door(pos)
+  insert({
+    {pos_c, pos}, 
+    {sprite_c, sprite:new(st.door, 2)}, 
+    {obj_c}, 
+    {block_sight_c}, 
+    {remains_c, st.rubble}, 
+    {health_c, health:new(10)},
+    {defense_c, {
+      [dam_type.phys] = 2,
+    }},
+    {on_move_onto_c, open_door}, 
+  })
+end
+
+function open_door(triggered, actor)
+  if player_c[actor] != nil then
+    delete(triggered)
+  end
 end
 
 function spawn_loot(pos)

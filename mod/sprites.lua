@@ -36,6 +36,7 @@ st = {
     wall = {10},
     tree = {44},
     loot = {14},
+    door = {46},
     wall_bottom = {{0,0,42,43}},
     rubble = {{0,0,58,59}},
     skull = {12},

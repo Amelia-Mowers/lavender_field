@@ -124,6 +124,8 @@ function move_block(pos,index)
   for e in all(index[pos:key()]) do
     if block_move_c[e] then return true end
   end
+
+  if unfogged_tiles[pos:key()] == nil then return true end
   
   return false
 end
