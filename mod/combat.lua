@@ -1,4 +1,4 @@
-attack_anim_c,float_c,notice_text_c,health_bar_c=batch_comp(4)
+attack_anim_c,float_c,notice_text_c,health_bar_c,dead_c=batch_comp(5)
 
 health={}
 health.__index=health
@@ -144,6 +144,7 @@ function death_check()
   for e,h in pairs(health_c) do
     if h:dead() then
       local r=remains_c[e] or st.skull
+      dead_c[e]=true
       health_c[e]=nil
       block_move_c[e]=nil
       block_sight_c[e]=nil

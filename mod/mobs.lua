@@ -54,46 +54,51 @@ function new_mob(
   return comp_list
 end
 
+player_chars = {}
+
+function spawn_player_char(char_type, pos, sprite_tiles, extra_components)
+  if player_chars[char_type] == nil or dead_c[player_chars[char_type]] then
+    player_chars[char_type] = insert(new_mob(
+      char_type,
+      pos,
+      sprite_tiles,
+      extra_components
+    ))
+  else
+    pos_c[player_chars[char_type]] = pos
+  end
+  
+  return player_chars[char_type]
+end
+
 mob = {
   knight = function(pos)
-    return insert(new_mob(
-      "knight",
-      pos,
-      st.knight,
+    return spawn_player_char("knight", pos, st.knight, {
+      {spawn_focus_c},
+      {player_c},
       {
-        {spawn_focus_c},
-        {player_c},
-        {
-          health_c, 
-          health:new(6)
-        },
-        {defense_c, {
-          [dam_type.phys] = 2,
-        }},
-      }
-    ))
+        health_c, 
+        health:new(6)
+      },
+      {defense_c, {
+        [dam_type.phys] = 2,
+      }},
+    })
   end,
+  
   wiz = function(pos)
-    return insert(new_mob(
-      "wiz",
-      pos,
-      st.wiz,
-      {
-        {player_c},
-      }
-    ))
+    return spawn_player_char("wiz", pos, st.wiz, {
+      {player_c},
+    })
   end,
+  
   gnome = function(pos)
-    return insert(new_mob(
-      "gnome",
-      pos,
-      st.gnome,
-      {
-        {player_c},
-        {attack_c, 7},
-      }
-    ))
+    return spawn_player_char("gnome", pos, st.gnome, {
+      {player_c},
+      {attack_c, 7},
+    })
   end,
+  
   skeleton = function(pos)
     return insert(new_mob(
       "skeleton",

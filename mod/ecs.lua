@@ -26,6 +26,11 @@ function insert(comps)
 end
 
 function delete(entity)
+  if child_c[entity] != nil then
+    for c in all(child_c[entity]) do
+      delete(c)
+    end
+  end
   for c in all(comp_list) do
     c[entity] = nil
   end

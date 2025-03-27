@@ -45,7 +45,9 @@ function render_victory()
     then
       for e, _ 
       in pairs(obj_c) do
-        delete(e)
+        if player_c[e] == nil then
+          delete(e)
+        end
       end
       
       cur_map = maps[

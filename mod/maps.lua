@@ -49,7 +49,15 @@ maps = {
     {
       {
         mob.knight,
-        vec2:new(3,7)
+        vec2:new(2,8)
+      },
+      {
+        mob.wiz,
+        vec2:new(1,7)
+      },
+      {
+        mob.gnome,
+        vec2:new(0,8)
       },
       {
         mob.skeleton,
@@ -67,8 +75,11 @@ maps = {
 
 
 function init_map()
+  covered_tiles = {}
   unfogged_tiles = {}
+  visible_tiles = {}
   unfogged_objects = {}
+  visible_objects = {}
 
   tile_sprite_mapping = {
     [16] = sprite:new(st.grass), 
@@ -100,6 +111,7 @@ function init_map()
       pos_c[pointer] = m[2]:copy()
     end
   end
+  update_fog_of_war()
 end
 
 function update_child_pos()
