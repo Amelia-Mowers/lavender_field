@@ -76,6 +76,9 @@ function update_fog_of_war(actor, inc)
       end
       for e in all(index[n:key()]) do
         if obj_c[e] != nil then
+          if unfogged_objects[e] == nil and mob_c[e] != nil and player_c[e] == nil then
+            spawn_notice_text(e, "!", 7)
+          end
           visible_objects[e] = {}
           unfogged_objects[e] = {}
         end
