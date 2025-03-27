@@ -24,7 +24,7 @@ function loss_control()
     init_map()
     update_fog_of_war()
 
-    next_state = "start"
+    next_state = "new_round"
     select_cool:restart()
   end
 end

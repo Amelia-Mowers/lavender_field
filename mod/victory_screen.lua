@@ -54,7 +54,7 @@ function render_victory()
         cur_map.next_map
       ]
       init_map()
-      next_state = "pick"
+      next_state = "new_round"
       select_cool:restart()
     end
   end
