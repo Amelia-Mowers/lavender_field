@@ -1,40 +1,10 @@
 function render_victory()
-    local text
-      = "victory!"
-      
-    local t_len, _ 
-      = print(text, -10, -10) 
-      
-    local tx 
-      = 64 
-      - t_len/2 
-      - 3
-    local ty
-      = 64
-    
-    print(
-      text, tx, ty,
-      6
-    )
-
-    text
-      = "press ❎/🅾️ to next level"
-      
-    t_len, _ 
-      = print(text, -10, -10) 
-      
-    tx 
-      = 64 
-      - t_len/2 
-      - 3
-    ty
-      = 74
-    
-    print(
-      text, tx, ty,
-      6
-    )
-  end
+  local txt = text:new("invicta!", 9, 0)
+  txt:render(nil, vec2:new(4 - txt:size().x/2,3.75))
+  
+  local txt2 = text:new("press ❎/🅾️ to restart", 9, 0)
+  txt2:render(nil, vec2:new(4 - txt2:size().x/2,4.25))
+end
   
   function victory_control()
     if (
