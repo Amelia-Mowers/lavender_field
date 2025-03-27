@@ -12,7 +12,9 @@ remains_c,
 sight_c,
 block_move_c,
 block_sight_c, 
-on_move_onto_c = batch_comp(15)
+on_move_onto_c,
+exp_c,
+level_c = batch_comp(17)
 
 function new_mob(
   name,
@@ -30,6 +32,8 @@ function new_mob(
     },
     {mob_c},
     {obj_c},
+    {exp_c, 0},
+    {level_c, 1},
     {block_move_c},
     {actions_c, 2},
     {move_points_c, 0},

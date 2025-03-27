@@ -3,8 +3,6 @@ function _init()
   init_action_menu()
   init_status_window()
   
-  exp = 0
-  
   cur_map = maps.trail
   
   state = "start"

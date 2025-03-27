@@ -200,8 +200,20 @@ end
 function collect_loot(triggered, actor)
   if player_c[actor] != nil then
     delete(triggered)
-    local e = 100
-    spawn_notice_text(actor,tostring(e),10)
-    exp += e
+    local e_value = 100
+    
+    for p, _ in pairs(player_c) do
+      if health_c[p] != nil and health_c[p]:alive() then
+        exp_c[p] += e_value
+        
+        spawn_notice_text(p, "+" .. tostr(e_value) .. " exp", 10)
+        
+        local exp_needed = 100 * (2 ^ (level_c[p] - 1))
+        
+        if exp_c[p] >= exp_needed then
+          level_c[p] += 1
+        end
+      end
+    end
   end
 end

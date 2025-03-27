@@ -16,9 +16,7 @@ function _draw()
     cls()
     render_victory()
   end
-  add(debug_print, state)
-  add(debug_print, exp)
-  print("",0,0,6)
+  print(state,0,0,6)
   for a in all(debug_print) do
     print(a)
   end

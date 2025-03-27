@@ -8,7 +8,7 @@ end
 function init_status_window()
   status_window = insert {
     {pos_c, vec2:new(5.25, .5)}, 
-    {rect_c, rectangle:new(vec2:new(2.25, 1.9), 0, 6, 5)}, 
+    {rect_c, rectangle:new(vec2:new(2.25, 2.2), 0, 6, 5)}, 
     {menu_c, menu:new({})}, 
     {menu_back_c, action_menu_back}, 
     {static_c},
@@ -33,6 +33,8 @@ end
 function open_status_window()
   local tar = target_selection
   local h, a, mp, s = health_c[tar], actions_c[tar], move_points_c[tar], speed_c[tar]
+  local e, l = exp_c[tar] or 0, level_c[tar] or 1
+  
   if state == "target" and selected_action then
     local potential_a, potential_mp = a, mp
     if selected_action.valid_target and selected_action.valid_target(tar, pos_c[pointer]) and selected_action.cost then
@@ -53,9 +55,10 @@ function open_status_window()
       a, mp = potential_a, potential_mp
     end
   end
+  
   local th = h.total
   local ch = th - h.dam
   local hs, ms = pad(tostr(ch), 2) .. "/" .. tostr(th), tostr(mp) .. "/" .. tostr(s)
-  local status_txt = name_c[tar] .. "\n" .. "hp:" .. hs .. "\n" .. "act:" .. tostr(a) .. "/2 \n" .. "mve:" .. ms .. "\n"
+  local status_txt = name_c[tar] .. "," .. tostr(l) .. "\n" .. "hp:" .. hs .. "\n" .. "act:" .. tostr(a) .. "/2 \n" .. "mve:" .. ms .. "\n" .. "exp:" .. tostr(e)
   text_c[status].text = status_txt
 end
