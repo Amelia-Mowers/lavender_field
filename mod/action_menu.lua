@@ -73,7 +73,7 @@ function init_action_menu()
   action_menu = insert({
     {pos_c, vec2:new(.5, .5)},
     {rect_c, rectangle:new(vec2:new(2, 2), 0, 6, 5)},
-    {menu_c, menu:new({})},
+    {menu_c, menu:new({}, "menu")},
     {menu_back_c, action_menu_back},
     {static_c},
     {states_visible_c, {menu = true}}
@@ -84,8 +84,9 @@ function init_action_menu()
     {
       menu_cursor_c, 
       menu_cursor:new(
-              action_menu,
-              vec2:new(-0.5,0)
+        action_menu,
+        vec2:new(-0.5,0),
+        "menu"
       )
     },
     {

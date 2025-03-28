@@ -13,19 +13,22 @@ menu_moved_last = false
 
 function menu_cursor:new(
   menu_e,
-  offset
+  offset,
+  state
 )
 	 obj = {
 	   pos = vec2:new(),
 	   offset = offset,
 	   focus = menu_e,
+     state = state
 	 }
 	 return obj
 end
 
-function menu:new(elements)
+function menu:new(elements,state)
 	 local obj = {
 	   elems = {},
+     state = state
 	 }
 	 if elements != nil then
 	   for n in all(elements) do
@@ -85,40 +88,38 @@ function menu_cursor_control()
   menu_move_cooldown:restart()
      
   if menu_moved_last then 
-  		menu_move_cooldown.limit
-  		*= 0.8
+    menu_move_cooldown.limit
+    *= 0.8
   else
-  		menu_move_cooldown.limit 
-  		= 0.3
+    menu_move_cooldown.limit 
+    = 0.3
   end
     
-		for e, c 
-		in pairs(menu_cursor_c) do
-    new_pos = c.pos:copy()
-    if new_move == ⬆️ then 
-      new_pos.y -= 1
-    elseif new_move == ⬇️ then 
-      new_pos.y += 1
-    elseif new_move == ⬅️ then
-      new_pos.x -= 1
-    elseif new_move == ➡️ then
-      new_pos.x += 1
+  for e, c 
+  in pairs(menu_cursor_c) do
+    if c.state == state then
+      new_pos = c.pos:copy()
+      if new_move == ⬆️ then 
+        new_pos.y -= 1
+      elseif new_move == ⬇️ then 
+        new_pos.y += 1
+      elseif new_move == ⬅️ then
+        new_pos.x -= 1
+      elseif new_move == ➡️ then
+        new_pos.x += 1
+      end
+        
+      elem = menu_c[c.focus].elems[new_pos:key()]
+
+      if elem != nil
+      then
+        sfx(1)
+        menu_move_onto_c[elem]()
+        menu_moved_last = true
+        c.pos = new_pos
+      end
     end
-    
-    elem = menu_c[
-      c.focus
-    ].elems[
-	     new_pos:key()
-	   ]
-	 
-	   if elem != nil
-	   then
-	 		  sfx(1)
-	 		  menu_move_onto_c[elem]()
-      menu_moved_last = true
-	     c.pos = new_pos
-	   end
-	 end
+  end
 end
 
 function menu_select()
@@ -127,33 +128,37 @@ function menu_select()
     select_cool:restart()
     for e, c 
     in pairs(menu_cursor_c) do
-      menu = menu_c[c.focus]
-      elem = menu.elems[
-        c.pos:key()
-      ] 
-       
-      if menu_select_c[elem]
-      != nil then
-	 		    if menu_select_c[elem]()
-	 		    then 
-	 		      sfx(1)
-	 		    else
-	 		      sfx(0)
-	 		    end
-	     end
+      if c.state == state then
+        menu = menu_c[c.focus]
+        elem = menu.elems[
+          c.pos:key()
+        ] 
+        
+        if menu_select_c[elem]
+        != nil then
+            if menu_select_c[elem]()
+            then 
+              sfx(1)
+            else
+              sfx(0)
+            end
+        end
+      end
     end
   end
 end
 
 function menu_back()
   if btn(🅾️) then
-   for e, _ 
-   in pairs(menu_c) do
-     if menu_back_c[e]
-     != nil then
-	 		  sfx(1)
-	 		  menu_back_c[e]()
-	    end
-   end
+    for e, m 
+    in pairs(menu_c) do
+      if m.state == state then 
+        if menu_back_c[e]
+        != nil then
+          sfx(1)
+          menu_back_c[e]()
+        end
+      end
+    end 
   end
 end

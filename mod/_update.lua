@@ -13,11 +13,6 @@ function _update()
     target_select()
     trigger_end_turn()
   end
-  if state == "menu" then
-    menu_cursor_control()
-    menu_select()
-    menu_back()
-  end
   if state == "target" then
     pointer_control_pad()
     target_deselect()
@@ -39,6 +34,9 @@ function _update()
   if state == "loss" then
     loss_control()
   end
+  menu_cursor_control()
+  menu_select()
+  menu_back()
   loss_check()
   death_check()
   update_health_bars()
