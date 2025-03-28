@@ -212,6 +212,7 @@ function collect_loot(triggered, actor)
         
         if exp_c[p] >= exp_needed then
           level_c[p] += 1
+          queue_level_up(p)
         end
       end
     end

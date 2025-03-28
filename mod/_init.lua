@@ -2,6 +2,7 @@ function _init()
   debug_print = {}
   init_action_menu()
   init_status_window()
+  init_level_up_system()
   
   cur_map = maps.trail
   
