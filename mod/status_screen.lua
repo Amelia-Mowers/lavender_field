@@ -10,7 +10,6 @@ function init_status_window()
     {pos_c, vec2:new(5.25, .5)}, 
     {rect_c, rectangle:new(vec2:new(2.25, 2.2), 0, 6, 5)}, 
     {menu_c, menu:new({})}, 
-    {menu_back_c, action_menu_back}, 
     {static_c},
     {states_visible_c, {
       target = true,
